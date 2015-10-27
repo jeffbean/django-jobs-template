@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}Django Jobs{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static 'boil_app/bs3.3.4/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'boil_app/bs3.3.4/css/bootstrap-theme.min.css' %}" rel="stylesheet" media="screen">
+    <!-- Font Awesome -->
+    <link href="{% static 'boil_app/font-awesome-4.3.0/css/font-awesome.min.css' %}" rel="stylesheet" media="screen">
+    <!-- Custom -->
+    <link href="{% static 'boil_app/css/footer.css' %}" rel="stylesheet" media="screen">
+    {% block morestyle %}{% endblock %}
+</head>
+<body>
+{% block navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">Boil</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'lab:pod-list' %}">Lab</a></li>
+                </ul>
+                {% if user.is_authenticated %}
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li class="dropdown ">
+                            <a class=" dropdown-toggle" data-toggle="dropdown" role="button"
+                               href="#">{{ user.username }} <span
+                                    class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{% url "admin:index" %}"><i class="fa fa-arrow-up"></i> Admin</a>
+                                </li>
+                                <li>
+                                    <a href="{% url "logout" %}?next={{ request.path }}"><i
+                                            class="fa fa-eject"></i> Logout</a>
+                                </li>
+                                <li>
+                                    <a href="#">v. 0.5</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% else %}
+                    <a type="button" href="{% url 'login' %}?next={{ request.path }}"
+                       class="btn btn-primary navbar-btn navbar-right">Sign in</a>
+                {% endif %}
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+{% endblock navbar %}
+<!-- Fixed navbar -->
+<div class='content wrapper'>
+    <div class="proper-content">
+        <!-- Begin page content -->
+        {% block breadcrumb %}{% endblock %}
+
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</div>
+<div class="push"></div>
+<footer class="footer-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-sm-10 col-xs-6">
+                <ul class="list-unstyled list-inline">
+                    <li class="">
+                        <a href="{% url 'lab:pod-list' %}">Home</a>
+                    </li>
+                    <li class="divider">&sdot;</li>
+                </ul>
+            </div>
+
+            <div class="col-md-2 col-sm-2 col-xs-6">
+                <ul class="list-unstyled text-right">
+                    <li>{{ hostname }}</li>
+                    {% if request.user.is_staff %}
+                        <li>Staff</li>
+                    {% endif %}
+                    <li>Ver. {{ version }}</li>
+                </ul>
+            </div>
+        </div>
+        <!--/row-->
+    </div>
+    <!--/container-->
+</footer>
+
+{% block scripts %}
+    <script src="http://code.jquery.com/jquery.js"></script>
+{#    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>#}
+    <script src="{% static 'boil_app/bs3.3.4/js/bootstrap.min.js' %}"></script>
+    {% block morescripts %}{% endblock morescripts %}
+
+{% endblock scripts %}
+</body>
+</html>

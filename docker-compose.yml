@@ -1,0 +1,35 @@
+db:
+  image: postgres:9.4
+  ports:
+    - "5432:5432"
+# redis container
+redis:
+  image: redis:2.8.19
+# rabbitmq container
+rabbitmq:
+  image: rabbitmq
+  ports:
+    - "8080:15672"  # here, we can access rabbitmq management plugin
+web:
+  build: .
+  ports:
+    - "8000:8001"
+  volumes:
+    - .:/code
+  links:
+    - db:db
+    - rabbitmq:rabbit
+    - redis:redis
+  environment:
+    - DJANGO_DEBUG_MODE=True
+
+# container with redis worker
+worker:
+  build: .
+  command: ./run_celery.sh
+  volumes:
+    - .:/code
+  links:
+    - db:db
+    - rabbitmq:rabbit
+    - redis:redis

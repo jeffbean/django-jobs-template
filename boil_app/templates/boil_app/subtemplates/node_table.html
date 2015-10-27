@@ -1,0 +1,22 @@
+{% load humanize %}
+{% for chass in chassis %}
+    <tr>
+        <td colspan="10">Chassis - {{ chass }}</td>
+    </tr>
+    {% with chass.node_set.all as servers %}
+        {% for node in servers %}
+            <tr id="node-{{ node.id }}">
+                <td>{{ node.uuid }}</td>
+                <td>{{ node.blade_slot }}</td>
+                <td>{{ node.hostname }}</td>
+                <td>{{ node.mgmt_ip_address }}</td>
+
+                <td>{{ node.get_status_display }}</td>
+                <td>{{ node.get_power_status_display }}</td>
+                <td>{{ node.firmware }}</td>
+                <td>{{ node.model }}</td>
+                <td>{{ node.updated_on|naturaltime }}</td>
+            </tr>
+        {% endfor %}
+    {% endwith %}
+{% endfor %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Login - {{ block.super }}{% endblock %}
+{% block content %}
+    <div class="container col-sm-6 col-sm-offset-3">
+        <div class="row">
+            {% if form.errors %}
+                <div class='well alert alert-danger row '>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Username or password was wrong. Please try again.</strong></div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <form class="well form-horizontal" method="post" action="{% url "login" %}">
+                {% csrf_token %}
+                {{ form|safe }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" value="login">Sign in</button>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    {% comment %}<a class="button btn btn-info" href=
+                        "{% url "password_reset" %}">Reset Password</a>{% endcomment %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load humanize %}
+<td><a href="{% url 'lab:pod-detail' object.slug %}">{{ object.name }}</a></td>
+<td>{{ object.owner }}</td>
+<td>{{ object.ip_address }}</td>
+<td>{{ object.appliance }}</td>
+<td>{{ object.version }}</td>
+<td>{{ object.last_update|naturaltime }}</td>
+<td>
+    {% if user.is_authenticated %}
+        <button class="btn btn-xs btn-primary refresh-button"
+                {# https://github.com/twbs/bootstrap/issues/793 #}
+                formaction="{% url 'api:pod-refresh-info' object.slug %}" value="{{ object.slug }}">
+            <span class="fa fa-refresh" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-xs btn-warning refresh-all-button"
+                {# https://github.com/twbs/bootstrap/issues/793 #}
+                formaction="{% url 'api:pod-refresh-all' object.slug %}" value="{{ object.slug }}">
+            <span class="fa fa-refresh" aria-hidden="true"></span>
+        </button>
+    {% endif %}
+</td>
